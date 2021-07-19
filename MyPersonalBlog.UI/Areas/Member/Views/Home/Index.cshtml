@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewData["Title"] = "Bloglar";
+}
+
+@model List<Blog>
+
+@if (Model.Count != 0)
+{
+    @foreach (var blog in Model)
+    {
+        <div class="blog-item">
+            <div class="row">
+                <div class="col-lg-2 col-sm-2">
+                    <div class="date-wrap comnt-wrap">
+                        <span class="date"><h4>Kategoriler</h4></span>
+                        @if (blog.CategoryBlogs.Count != 0)
+                        {
+                            @foreach (var categoryBlog in blog.CategoryBlogs)
+                            {
+                                <span class="value"> <a asp-controller="Category" asp-action="CategoryDetail" asp-route-categoryId="@categoryBlog.CategoryId"  asp-route-name="@Url.FriendlyUrl(categoryBlog.Category.Name)">@categoryBlog.Category.Name</a></span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="value">Kategori Yok</span>
+                        }
+
+                    </div>
+                    <div class="comnt-wrap">
+                        <span class="comnt-ico">
+                            <i class="icon-comments"></i>
+                        </span>
+                        <span class="value">@blog.Comments.Count</span>
+                    </div>
+                    <div class="comnt-wrap">
+                        <span class="comnt-ico">
+                            <i class="icon-eye-open"></i>
+                        </span>
+                        <span class="value">@blog.ViewsNumber</span>
+                    </div>
+                    <div class="comnt-wrap">
+                        <span class="comnt-ico">
+                            <i class="icon-calendar"></i>
+                        </span>
+                        <span class="value">@blog.PostedTime.ToShortDateString()</span>
+                    </div>
+                </div>
+                <div class="col-lg-10 col-sm-10">
+                    <div class="blog-img">
+                        <img src="~/images/@blog.ImagePath" alt="@blog.Title">
+                    </div>
+                    <h1><a asp-controller="Blog" asp-action="BlogDetail" asp-route-blogId="@blog.Id" asp-route-title="@Url.FriendlyUrl(blog.Title)">@blog.Title</a></h1>
+                    <p>@blog.ShortDescription</p>
+                    <a asp-controller="Blog" asp-action="BlogDetail" asp-route-blogId="@blog.Id" asp-route-title="@Url.FriendlyUrl(blog.Title)" class="btn btn-danger">Devamını Oku</a>
+
+                </div>
+            </div>
+        </div>
+    }
+    <div class="text-center">
+        <ul class="pagination">
+            @for (int i = 1; i <= ViewBag.ToplamSayfa; i++)
+            {
+                <li class="@(ViewBag.AktifSayfa==i?"active":"")">
+                    <a asp-action="Index" asp-route-aktifSayfa="@i">@i</a>
+                </li>
+            }
+
+            @*<li><a href="#">«</a></li>
+                <li class="active"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">»</a></li>*@
+        </ul>
+    </div>
+
+}
+else
+{
+    <h1>Herhangi bir blog YOK</h1>
+}
+

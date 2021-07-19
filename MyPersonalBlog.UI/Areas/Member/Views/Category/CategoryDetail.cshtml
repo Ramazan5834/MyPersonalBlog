@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewData["Title"] = "Kategori Detay";
+}
+
+@model Category
+
+<div class="row">
+    <div class="text-center feature-head">
+        <h1> @Model.Name </h1>
+        <p>@Model.Description</p>
+    </div>
+    @if (Model.CategoryBlogs.Count != 0)
+    {
+        @for (int i = 0; i < Model.CategoryBlogs.Count;)
+        {
+            <div class="row">
+                <div class="col-lg-6">
+                    <hr />
+                    <div class=" text-center">
+                        <img style="height: 150px; width: 250px" src="~/images/@Model.CategoryBlogs[i].Blog.ImagePath" alt="@Model.CategoryBlogs[i].Blog.Title">
+                    </div>
+                    <div class="person-info text-center">
+                        <h4>
+                            <a asp-controller="Blog" asp-action="BlogDetail" asp-route-blogId="@Model.CategoryBlogs[i].BlogId" asp-route-title="@Url.FriendlyUrl(Model.CategoryBlogs[i].Blog.Title)">@Model.CategoryBlogs[i].Blog.Title</a>
+                        </h4>
+                        <p>@Model.CategoryBlogs[i].Blog.ShortDescription</p>
+                    </div>
+                    @{ i++;}
+                </div>
+                @if (i != Model.CategoryBlogs.Count)
+                {
+                    <div class="col-lg-6">
+                        <hr />
+                        <div class=" text-center">
+                            <img style="height: 150px; width: 250px" src="~/images/@Model.CategoryBlogs[i].Blog.ImagePath" alt="@Model.CategoryBlogs[i].Blog.Title">
+                        </div>
+                        <div class="person-info text-center">
+                            <h4>
+                                <a asp-controller="Blog" asp-action="BlogDetail" asp-route-blogId="@Model.CategoryBlogs[i].BlogId" asp-route-title="@Url.FriendlyUrl(Model.CategoryBlogs[i].Blog.Title)">@Model.CategoryBlogs[i].Blog.Title</a>
+                            </h4>
+                            <p>@Model.CategoryBlogs[i].Blog.ShortDescription</p>
+                        </div>
+                        @{ i++;}
+                    </div>
+                }
+            </div>
+
+        }
+    }
+    else
+    {
+        <div class="text-center feature-head">
+            <hr />
+            <p>Kategoriye ait herhangi bir blog yok</p>
+        </div>
+    }
+
+
+</div>

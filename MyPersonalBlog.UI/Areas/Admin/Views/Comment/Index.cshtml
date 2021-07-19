@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewData["Title"] = "Onay Bekleyen Yorumlar";
+}
+
+@model List<UnconfirmedCommentListDto>
+
+@Html.Partial("PartialDeleteModal", "Kategori Sil")
+
+
+@if (Model.Count != 0)
+{
+    <div class="card">
+        <div class="card-header">
+            <h5>Onay Bekleyen Yorumlar</h5>
+            <div class="card-header-right">
+                @*<a class="btn btn-secondary" asp-action="CreateOrUpdateCategory">Yeni Kategori</a>*@
+            </div>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Blog Başlığı</th>
+                            <th>Yorumcu Kişi</th>
+                            <th>Yorumcu Email </th>
+                            <th>Yorum İçeriği</th>
+                            <th>Yorum Tarihi</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var comment in Model)
+                        {
+                            <tr>
+                                <td>@comment.Blog.Title</td>
+                                <td>@comment.AuthorName</td>
+                                <td>@comment.AuthorEmail</td>
+                                <td>@comment.Description</td>
+                                <td>@comment.PostedTime.ToShortDateString()</td>
+                                <td>
+                                    <a class="btn btn-sm btn-success" asp-action="ConfirmComment" asp-route-commentId="@comment.Id"><i class="icofont icofont-check-circled"></i>Onayla</a>
+                                    <a class="btn btn-sm btn-danger openModal" data-modid="@comment.Id" data-modtitle="@comment.Description" data-toggle="modal" href="#myModal"><i class="icofont icofont-ui-delete"></i>Reddet</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h1>Onay Bekleyen Yorum Yok</h1>
+}
+
+
+
+@section Scritps
+{
+    <script>
+        $(".openModal").click(function () {
+            $(".modal-body>p.error").html("")
+            var title = $(this).data("modtitle");
+            $(".modal-body>p.message").html(title + "yorumu reddedilsinmi");
+            $(".modal-body>p.error").html("Dikkat");
+            var id = $(this).data("modid");
+            $(".delModal").data("id", id);
+
+        });
+
+        $(".delModal").click(function () {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Comment/RejectComment/" + id,
+                success: function (durum) {
+                    if (durum == true) {
+                        window.location.replace("/Admin/Comment/Index");
+                    } else {
+                        $(".modal-body>p.error").html("Bir hata oluştu");
+                    }
+                }
+            });
+        });
+
+    </script>
+}

@@ -1,0 +1,133 @@
+﻿
+@{
+    ViewData["Title"] = "Profil Güncelle";
+}
+@model AppUserUpdateDto
+
+
+<div class="col-sm-10 container-fluid">
+    <!-- Basic Form Inputs card start -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Profil Güncelleme Sayfası</h5>
+        </div>
+        <div class="card-block">
+            @if (TempData["message"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["message"]
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <form asp-action="UpdateProfile" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Id" value="@Model.Id"/>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Ad</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                        <input type="text" class="form-control"  asp-for="Name" placeholder="Adınızı giriniz">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Soyad</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="SurName" class="text-danger"></span>
+                        <input type="text" class="form-control"  asp-for="SurName" placeholder="Soyadınız giriniz">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Telefon Numarası</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        <input type="text" class="form-control"  asp-for="PhoneNumber" placeholder="Numaranızı giriniz">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Email Adresi</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <input type="text" class="form-control"  asp-for="Email" placeholder="Email Adresinizi giriniz">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">GitHub Adresi</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="GitHubAddress" class="text-danger"></span>
+                        <input type="text" class="form-control"  asp-for="GitHubAddress" placeholder="GitHub Adresinizi giriniz">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Facebook Adresi</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="FacebookAddress" class="text-danger"></span>
+                        <input type="text" class="form-control"  asp-for="FacebookAddress" placeholder="Facebook Adresinizi giriniz">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">YouTube Adresi</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="YouTubeAddress" class="text-danger"></span>
+                        <input type="text" class="form-control"  asp-for="YouTubeAddress" placeholder="YouTube Adresinizi giriniz">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">LinkedIn Adresi</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="LinkedInAddress" class="text-danger"></span>
+                        <input type="text" class="form-control"  asp-for="LinkedInAddress" placeholder="LinkedIn Adresinizi giriniz">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Autobiography</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="Autobiography" class="text-danger"></span>
+                        <textarea rows="8" class="form-control" asp-for="Autobiography" placeholder="Özgeçmişinizi Giriniz"></textarea>
+                        @*<input type="text" class="form-control"  asp-for="Autobiography" placeholder="Özgeçmişinizi giriniz">*@
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Kişi Resmi</label>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-4">
+                            <div>
+                                <h5 class="">Şu anki resminiz:</h5>
+                                <img src="~/images/@Model.Picture" style="height: 10rem !important;" alt="@Model.Name"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div id="alanOnizleme" style="display: none !important;">
+                                <h5 class="text-center">Seçtiğiniz resim:</h5>
+                                <img id="resimOnizleme" class="w-100" style="height: 10rem !important;"/>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label>Resim Seç:</label>
+                            <input type="hidden" asp-for="Picture"/>
+                            <input type="file" class="form-control-file" name="Resim" id="resim"/>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <button type="submit" class="btn waves-effect waves-light btn-primary"><i class="icofont icofont-check-circled"></i>Kaydet</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+@section Scritps{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#resim").change(function(e) {
+                $("#alanOnizleme").show();
+                $("#resimOnizleme").attr("src", URL.createObjectURL(e.target.files[0]));
+            });
+        });
+    </script>
+    <script src="~/lib/jquery-validate/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}

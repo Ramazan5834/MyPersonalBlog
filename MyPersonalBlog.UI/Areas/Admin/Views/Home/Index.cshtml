@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "Anasayfa";
+}
+@model int
+
+@if (Model != 0)
+{
+    <!-- Warning-color Breadcrumb card start -->
+    <div class="card borderless-card">
+        <div class="card-block warning-breadcrumb">
+            <div class="breadcrumb-header">
+                <h5 style="color: dimgray">Dikkat Onay Bekleyen Yorumlarınız Var</h5><br/>
+                <h6 style="color: dimgray">@Model adet onay bekleyen yorum var</h6>
+            </div>
+        </div>
+    </div>
+    <!-- Warning-color Breadcrumb card end -->
+}
+else
+{
+    <!-- Success-color Breadcrumb card start -->
+    <div class="card borderless-card">
+        <div class="card-block success-breadcrumb">
+            <div class="breadcrumb-header">
+                <h5>Onay Bekleyen Yorum Yok</h5>
+            </div>
+        </div>
+    </div>
+    <!-- Success-color Breadcrumb card end -->
+}
+

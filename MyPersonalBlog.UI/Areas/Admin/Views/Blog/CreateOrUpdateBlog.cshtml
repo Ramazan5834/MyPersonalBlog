@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewData["Title"] = "Blog Oluştur Yada Güncelle";
+}
+
+@model BlogCreateOrUpdateDto
+@section Csses
+{
+    <link href="~/froala_editor_3.1.0/css/froala_editor.pkgd.min.css" rel="stylesheet" />
+}
+
+<div class="col-sm-12 container-fluid">
+    <!-- Basic Form Inputs card start -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Blog Ekleme Sayfası</h5>
+        </div>
+        <div class="card-block">
+            <form asp-action="CreateOrUpdateBlog" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Id" value="@Model.Id" />
+                <input type="hidden" asp-for="ViewsNumber" value="@Model.ViewsNumber" />
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Başlık</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                        <input type="text" class="form-control" asp-for="Title" placeholder="Blog Başlığını giriniz">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Kısa Tanım</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="ShortDescription" class="text-danger"></span>
+                        <input type="text" class="form-control" asp-for="ShortDescription" placeholder="Blog Kısa tanım giriniz">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Blog İçeriği</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                        <textarea style="height: 300px" class="form-control" asp-for="Description" id="edit"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Blog Resmi</label>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-4">
+                            <div>
+                                <h5 class="">Şu anki resminiz:</h5>
+                                <img src="~/images/@Model.ImagePath" style="height: 10rem !important;" alt="@Model.Title" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div id="alanOnizleme" style="display: none !important;">
+                                <h5 class="text-center">Seçtiğiniz resim:</h5>
+                                <img id="resimOnizleme" class="w-100" style="height: 10rem !important;" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label>Resim Seç:</label>
+                            <input type="file" class="form-control-file" name="Resim" id="resim" />
+                            <input type="hidden" asp-for="ImagePath" />
+                        </div>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                    </div>
+                </div>
+                <br />
+                <button type="submit" class="btn waves-effect waves-light btn-primary"><i class="icofont icofont-check-circled"></i>Kaydet</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+@section Scritps{
+    <script src="~/froala_editor_3.1.0/js/froala_editor.pkgd.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#resim").change(function (e) {
+                $("#alanOnizleme").show();
+                $("#resimOnizleme").attr("src", URL.createObjectURL(e.target.files[0]));
+            })
+        })
+    </script>
+
+    <script>
+        new FroalaEditor('#edit', {
+            // Set the image upload URL.
+            height: 1100,
+            imageUploadURL: '/Admin/Blog/UploadBlogDescImage',
+            imageUploadParams: {
+                id: 'my_editor'
+            }
+        })
+    </script>
+
+    <script src="~/lib/jquery-validate/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}

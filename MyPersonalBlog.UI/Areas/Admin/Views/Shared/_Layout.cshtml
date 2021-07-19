@@ -1,0 +1,251 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>@ViewData["Title"]</title>
+    <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 10]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Mega Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
+    <meta name="keywords" content="flat ui, admin Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="codedthemes" />
+    <!-- Favicon icon -->
+    <link rel="icon" href="/templates/Frontend(Flatlab)/img/MyMemberLogo.png" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="/templates/mega-able-lite/assets/css/bootstrap/css/bootstrap.min.css">
+    <!-- waves.css -->
+    <link rel="stylesheet" href="/templates/mega-able-lite/assets/pages/waves/css/waves.min.css" type="text/css" media="all">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="/templates/mega-able-lite/assets/icon/themify-icons/themify-icons.css">
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="/templates/mega-able-lite/assets/icon/icofont/css/icofont.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="/templates/mega-able-lite/assets/icon/font-awesome/css/font-awesome.min.css">
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="/templates/mega-able-lite/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/templates/mega-able-lite/assets/css/jquery.mCustomScrollbar.css">
+    @RenderSection("Csses", false)
+</head>
+
+<body>
+    @{ActiveInfoModel activeInfoModel = (ActiveInfoModel)TempData["Active"];}
+    <!-- Pre-loader start -->
+    <!-- #region PreLoader -->
+    <div class="theme-loader">
+        <div class="loader-track">
+            <div class="preloader-wrapper">
+                <div class="spinner-layer spinner-blue">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+                <div class="spinner-layer spinner-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+
+                <div class="spinner-layer spinner-yellow">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+
+                <div class="spinner-layer spinner-green">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #endregion -->
+    <!-- Pre-loader end -->
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            <nav class="navbar header-navbar pcoded-header">
+                <div class="navbar-wrapper">
+                    <div class="navbar-logo">
+                        <a class="mobile-menu waves-effect waves-light" id="mobile-collapse" href="#!">
+                            <i class="ti-menu"></i>
+                        </a>
+                        <a asp-action="Index" asp-controller="Home">
+                            <img style="height: 50px" class="img-fluid" src="/templates/mega-able-lite/assets/images/MyAdminLogo.png" alt="Theme-Logo" />
+                        </a>
+                        <a class="mobile-options waves-effect waves-light">
+                            <i class="ti-more"></i>
+                        </a>
+                    </div>
+
+                    <div class="navbar-container container-fluid">
+                        <ul class="nav-left">
+                            <li>
+                                <div class="sidebar_toggle"><a href="javascript:void(0)"><i class="ti-menu"></i></a></div>
+                            </li>
+
+                            <li>
+                                <a href="#!" onclick="javascript:toggleFullScreen()" class="waves-effect waves-light">
+                                    <i class="ti-fullscreen"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        @await Component.InvokeAsync("NavRightVC")
+                    </div>
+                </div>
+            </nav>
+
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                    <nav class="pcoded-navbar">
+                        <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
+                        <div class="pcoded-inner-navbar main-menu">
+                            <div class="">
+                                @await Component.InvokeAsync("MainMenuHeaderVC")
+                            </div>
+                            <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">Kategory Menü</div>
+                            <ul class="pcoded-item pcoded-left-item">
+                                <li class="@(activeInfoModel.ActiveNavItem == "category" ? "active" : "")">
+                                    <a class="waves-effect waves-dark" asp-action="Index" asp-controller="Category">
+                                        <span class="pcoded-micon"><i class="ti-folder"></i><b>D</b></span>
+                                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Kategorilerim</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">Blog Menü</div>
+                            <ul class="pcoded-item pcoded-left-item">
+                                <li class="@(activeInfoModel.ActiveNavItem == "blog" ? "active" : "")">
+                                    <a class="waves-effect waves-dark" asp-action="Index" asp-controller="Blog">
+                                        <span class="pcoded-micon"><i class="ti-book"></i><b>D</b></span>
+                                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Bloglarım</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">Yorumlar Menü</div>
+                            <ul class="pcoded-item pcoded-left-item">
+                                <li class="@(activeInfoModel.ActiveNavItem == "unconfirmedcomment" ? "active" : "")">
+                                    <a class="waves-effect waves-dark" asp-action="Index" asp-controller="Comment">
+                                        <span class="pcoded-micon">
+                                            <i class="ti-comment-alt"></i>
+
+                                            @if (activeInfoModel.CommentNotificationNumber >= 0)
+                                            {
+                                                <sub class="badge badge-info badge-pill position-absolute" style="bottom: 0.625rem !important; left: 0.8rem !important;">@activeInfoModel.CommentNotificationNumber</sub>
+                                            }
+
+                                        </span>
+
+                                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Onay Bekleyen Yorumlar</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">Profil Menü</div>
+                            <ul class="pcoded-item pcoded-left-item">
+                                <li class="@(activeInfoModel.ActiveNavItem == "myprofile" ? "active" : "")">
+                                    <a class="waves-effect waves-dark" asp-action="Index" asp-controller="Profile">
+                                        <span class="pcoded-micon"><i class="ti-user"></i><b>D</b></span>
+                                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Profilim</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <div class="pcoded-content">
+                        <!-- Page-header start -->
+                        <div class="page-header">
+                            <div class="page-block">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <div class="page-header-title">
+                                            <h5 class="m-b-10">Sayın Admin Hoşgeldiniz</h5>
+                                            <p class="m-b-0">Sisteme Giriş Yaptınız</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Page-header end -->
+                        <div class="pcoded-inner-content">
+                            <div class="main-body">
+                                <div class="page-wrapper">
+                                    <div class="page-body">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                @RenderBody()
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="styleSelector">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Required Jquery -->
+    <script type="text/javascript" src="/templates/mega-able-lite/assets/js/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/templates/mega-able-lite/assets/js/jquery-ui/jquery-ui.min.js "></script>
+    <script type="text/javascript" src="/templates/mega-able-lite/assets/js/popper.js/popper.min.js"></script>
+    <script type="text/javascript" src="/templates/mega-able-lite/assets/js/bootstrap/js/bootstrap.min.js "></script>
+    <!-- waves js -->
+    <script src="/templates/mega-able-lite/assets/pages/waves/js/waves.min.js"></script>
+    <!-- jquery slimscroll js -->
+    <script type="text/javascript" src="/templates/mega-able-lite/assets/js/jquery-slimscroll/jquery.slimscroll.js "></script>
+    <!-- modernizr js -->
+    <script type="text/javascript" src="/templates/mega-able-lite/assets/js/SmoothScroll.js"></script>
+    <script src="/templates/mega-able-lite/assets/js/jquery.mCustomScrollbar.concat.min.js "></script>
+    <script src="/templates/mega-able-lite/assets/js/pcoded.min.js"></script>
+    <script src="/templates/mega-able-lite/assets/js/vertical-layout.min.js "></script>
+    <script src="/templates/mega-able-lite/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!-- Custom js -->
+    <script type="text/javascript" src="/templates/mega-able-lite/assets/js/script.js"></script>
+    @RenderSection("Scritps", false)
+</body>
+
+</html>

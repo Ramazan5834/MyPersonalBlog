@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewData["Title"] = "Kategoriler";
+}
+
+@model List<CategoryListDto>
+<div class="container">
+    <div class="row">
+        <div class="text-center feature-head">
+            <h1> Kategorilerimiz </h1>
+            <p>Kategori türleri ve sahip oldukları bloglar</p>
+        </div>
+        @if (Model.Count != 0)
+        {
+            @for (int i = 0; i < Model.Count;)
+            {
+                <div class="row">
+                    <div class="col-lg-6 col-sm-6">
+                        <a asp-action="CategoryDetail" asp-controller="Category" asp-route-categoryId="@Model[i].Id" asp-route-name="@Url.FriendlyUrl(Model[i].Name)">
+                            <div class="icon-wrap ico-bg round">
+                                <i class="icon-folder-open"></i>
+                            </div>
+                            <div class="content">
+                                <h3 class="title">@Model[i].Name</h3>
+                                <p>@Model[i].Description</p>
+                            </div>
+                        </a>
+                        @{ i++;}
+                    </div>
+                    @if (i != Model.Count)
+                    {
+                        <div class="col-lg-6 col-sm-6">
+                            <a asp-action="CategoryDetail" asp-controller="Category" asp-route-categoryId="@Model[i].Id" asp-route-name="@Url.FriendlyUrl(Model[i].Name)">
+                                <div class="icon-wrap ico-bg round">
+                                    <i class="icon-folder-open"></i>
+                                </div>
+                                <div class="content">
+                                    <h3 class="title">@Model[i].Name</h3>
+                                    <p>@Model[i].Description</p>
+                                </div>
+                            </a>
+                            @{ i++;}
+                        </div>
+                    }
+                </div>
+                <div class="col-lg-6 col-sm-6">
+                    <hr />
+                </div>
+                <div class="col-lg-6 col-sm-6">
+                    <hr />
+                </div>
+            }
+        }
+        else
+        {
+            <div class="text-center">
+                <h3>Herhangi Bir Kategori Yok</h3>
+            </div>
+        }
+
+    </div>
+</div>
+
+

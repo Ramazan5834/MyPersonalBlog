@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewData["Title"] = "Bana Ulaşın";
+}
+@model SendMessageModel
+
+@{ AppUserListDto admin = (AppUserListDto) ViewBag.AdminInfos;}
+<div class="row">
+    <div class="col-lg-5 col-sm-5 address">
+        <h4>İletişim Bilgilerim</h4>
+        <p>
+            Telefon <br />
+            <span class="muted">@admin.PhoneNumber</span><br /><br />
+            Email <br />
+            <span class="muted">@admin.Email</span>
+        </p>
+    </div>
+    <div class="col-lg-7 col-sm-7 address">
+        <h4>İletişime Geç</h4>
+        <div class="contact-form">
+            <form asp-action="SendEmail" method="post">
+                @if (TempData["message"] != null)
+                {
+                    <div class="alert alert-success fade in" role="alert">
+                        @TempData["message"]
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <i class="icon-remove"></i>
+                        </button>
+                    </div>
+                }
+                @if (TempData["errorMessage"] != null)
+                {
+                    <div class="alert alert-danger fade in" role="alert">
+                        @TempData["errorMessage"]
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <i class="icon-remove"></i>
+                        </button>
+                    </div>
+                }
+                <div class="form-group">
+                    <label>Ad</label>
+                    <input type="text" placeholder="Adınızı Giriniz" asp-for="SenderName" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" placeholder="Email'inizi Giriniz" asp-for="SenderEmail" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Mesaj</label>
+                    <textarea placeholder="Göndermek İstediğiniz Mesajınızı Giriniz" asp-for="MessageBody" rows="5" class="form-control"></textarea>
+                </div>
+                <button class="btn btn-danger" type="submit">Submit</button>
+            </form>
+
+        </div>
+    </div>
+</div>

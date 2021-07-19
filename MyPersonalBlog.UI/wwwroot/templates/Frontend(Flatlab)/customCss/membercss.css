@@ -1,0 +1,11 @@
+﻿#mysitelogo {
+    margin-top: -20px;
+    height: 80px;
+}
+
+@media (max-width:770px) {
+    #mysitelogo {
+        margin-top: 0px;
+        height: 80px;
+    }
+}

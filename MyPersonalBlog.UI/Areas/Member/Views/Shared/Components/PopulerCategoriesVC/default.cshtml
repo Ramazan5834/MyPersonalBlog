@@ -1,0 +1,22 @@
+﻿@model List<Category>
+<div class="category">
+    <h3>Popüler Kategoriler</h3>
+    <ul class="list-unstyled">
+        @if (Model.Count != 0)
+        {
+            @foreach (var category in Model)
+            {
+                <li style="font-size: 16px">
+                    <a asp-action="CategoryDetail" asp-controller="Category" asp-route-categoryId="@category.Id" asp-route-name="@Url.FriendlyUrl(category.Name)">
+                        <i class="  icon-folder-open"></i> @category.Name
+                    </a>
+                </li>
+            }
+        }
+        else
+        {
+            <li><a href="javascript:;"><i class="  icon-angle-right"></i> Kategori Yok</a></li>
+        }
+    </ul>
+</div>
+

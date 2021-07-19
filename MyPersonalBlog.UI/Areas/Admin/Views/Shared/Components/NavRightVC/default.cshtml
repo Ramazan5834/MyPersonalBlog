@@ -1,0 +1,18 @@
+﻿@model AppUserListDto
+
+<ul class="nav-right">
+    <li class="user-profile header-notification">
+        <a href="#!" class="waves-effect waves-light">
+            <img src="~/images/@Model.Picture" class="img-radius" alt="User-Profile-Image">
+            <span>@Model.Name @Model.SurName</span>
+            <i class="ti-angle-down"></i>
+        </a>
+        <ul class="show-notification profile-notification">
+            <li class="waves-effect waves-light">
+                <a asp-action="LogOut" asp-controller="Home" asp-area="">
+                    <i class="ti-layout-sidebar-left"></i> Çıkış Yap
+                </a>
+            </li>
+        </ul>
+    </li>
+</ul>

@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewData["Title"] = "Bloglar";
+}
+@model List<BlogListDto>
+
+
+@Html.Partial("PartialDeleteModal", "Blog Sil")
+
+
+@if (Model.Count != 0)
+{
+    <div class="card">
+        <div class="card-header">
+            <h5>Bloglarım</h5>
+            <div class="card-header-right">
+                <a style="margin-top: -12px" class="btn btn-secondary" asp-action="CreateOrUpdateBlog"><i style="color: white" class="icofont icofont-ui-add"></i>Yeni Blog</a>
+            </div>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive">
+                <table class="table table-hover" >
+                    <thead>
+                        <tr>
+                            <th>Blog Resmi</th>
+                            <th>Başlık</th>
+                            <th>Kısa İçerik</th>
+                            <th>Eklenme Tarihi</th>
+                            <th>Görüntülenme Sayısı</th>
+                            <th>Kategorileri</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var blog in Model)
+                        {
+                            <tr>
+                                <td><img style="height: 70px" src="~/images/@blog.ImagePath" /></td>
+                                <td>@blog.Title</td>
+                                <td>@blog.ShortDescription</td>
+                                <td>@blog.PostedTime.ToShortDateString()</td>
+                                <td>@blog.ViewsNumber</td>
+                                <td>
+                                    <ul>
+                                        @if (blog.CategoryBlogs.Count != 0)
+                                        {
+                                            @foreach (var categoryBlog in blog.CategoryBlogs)
+                                            {
+                                                <li>@categoryBlog.Category.Name</li>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <li>Kategori Yok</li>
+                                        }
+                                    </ul>
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm btn-warning" asp-action="AssignCategory" asp-route-blogId="@blog.Id"><i class="icofont icofont-edit"></i>Kategori Düzenle</a>
+                                    <a class="btn btn-sm btn-success" asp-action="CreateOrUpdateBlog" asp-route-blogId="@blog.Id"><i class="icofont icofont-edit-alt"></i>Düzenle</a>
+                                    <a class="btn btn-sm btn-danger openModal" data-modid="@blog.Id" data-modtitle="@blog.Title" data-toggle="modal" href="#myModal"><i class="icofont icofont-ui-delete"></i>Sil</a>
+                               </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h1>Kayıtlı Blog Yok</h1>
+    <a class="btn btn-secondary" asp-action="CreateOrUpdateBlog"><i style="color: white" class="icofont icofont-ui-add"></i>Yeni Blog</a>
+}
+
+
+
+@section Scritps
+{
+    <script>
+        $(".openModal").click(function () {
+            $(".modal-body>p.error").html("")
+            var title = $(this).data("modtitle");
+            $(".modal-body>p.message").html("Blog " + title + " silinsinmi");
+            $(".modal-body>p.error").html("Dikkat sildiğiniz bloga bağlı yorumlarda silinecektir");
+            var id = $(this).data("modid");
+            $(".delModal").data("id", id);
+
+        });
+
+        $(".delModal").click(function () {
+            var id = $(this).data("id");
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Blog/RemoveBlog/" + id,
+                success: function (durum) {
+                    if (durum == true) {
+                        window.location.replace("/Admin/Blog/Index");
+                    } else {
+                        $(".modal-body>p.error").html("Bir hata oluştu");
+                    }
+                }
+            });
+        });
+
+    </script>
+}

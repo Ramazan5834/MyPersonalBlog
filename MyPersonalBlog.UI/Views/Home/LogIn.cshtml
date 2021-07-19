@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewData["Title"] = "Giriş Yap";
+}
+
+@model AppUserSignInDto
+
+<form class="md-float-material form-material" asp-action="LogIn" method="post">
+    <div class="auth-box card">
+        <div class="card-block">
+            <div class="row m-b-20">
+                <div class="col-md-12">
+                    <h3 class="text-center">Admin Giriş Ekranı</h3>
+                </div>
+            </div>
+            <div class="form-group form-primary">
+                <span asp-validation-for="UserName" class="text-danger"></span>
+                <input type="text" value="" class="form-control" asp-for="UserName">
+                <span class="form-bar"></span>
+                <label class="float-label">Kullanıcı Adı</label>
+            </div>
+            <div class="form-group form-primary">
+                <span asp-validation-for="Password" class="text-danger"></span>
+                <input type="password" class="form-control" asp-for="Password">
+                <span class="form-bar"></span>
+                <label class="float-label">Parolanız</label>
+            </div>
+            <div class="row m-t-25 text-left">
+                <div class="col-12">
+                    <div class="checkbox-fade fade-in-primary d-">
+                        <label>
+                            <input type="checkbox" asp-for="RememberMe">
+                            <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
+                            <span class="text-inverse">Remember me</span>
+                        </label>
+                    </div>
+                    <div class="forgot-phone text-right f-right">
+                        <a asp-action="ForgotPassword" class="text-right f-w-600"> Parolamı Unuttum</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row m-t-30">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Giriş Yap</button>
+                </div>
+            </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <hr />
+        </div>
+    </div>
+</form>
+
+@section Scritps
+{
+    <script src="~/lib/jquery-validate/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}

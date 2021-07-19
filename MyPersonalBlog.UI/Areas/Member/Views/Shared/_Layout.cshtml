@@ -1,0 +1,113 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Mosaddek">
+    <meta name="keyword" content="FlatLab, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+
+    <title>@ViewData["Title"]</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/templates/Frontend(Flatlab)/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/templates/Frontend(Flatlab)/css/theme.css" rel="stylesheet">
+    <link href="/templates/Frontend(Flatlab)/css/bootstrap-reset.css" rel="stylesheet">
+    <!--external css-->
+    <link href="/templates/Frontend(Flatlab)/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/templates/Frontend(Flatlab)/css/flexslider.css" />
+    <link href="/templates/Frontend(Flatlab)/assets/bxslider/jquery.bxslider.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="/templates/Frontend(Flatlab)/css/style.css" rel="stylesheet">
+    <link href="/templates/Frontend(Flatlab)/css/style-responsive.css" rel="stylesheet" />
+    <link href="/templates/Frontend(Flatlab)/customCss/membercss.css" rel="stylesheet" />
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
+    <!-- Favicon icon -->
+    <link rel="icon" href="/templates/Frontend(Flatlab)/img/MyMemberLogo.png" type="image/x-icon">
+</head>
+
+<body style="background-color: #f9f9f9">
+    @{ ActiveInfoModel activeInfoModel = (ActiveInfoModel)TempData["Active"]; }
+    <!--header start-->
+    <header class="header-frontend">
+        <div class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" asp-action="Index" asp-controller="Home">
+                        <span>
+                            <img id="mysitelogo" style="height: 80px" class="img-fluid" src="/templates/Frontend(Flatlab)/img/MyMemberLogo.PNG" />
+                        </span>
+                    </a>
+                </div>
+                <div class="navbar-collapse collapse ">
+                    <ul class="nav navbar-nav">
+                        <li class="@(activeInfoModel.ActiveNavItem == "blog" ? "active" : "")"><a asp-action="Index" asp-controller="Home">Bloglar</a></li>
+                        <li class="@(activeInfoModel.ActiveNavItem == "category" ? "active" : "")"><a asp-action="Index" asp-controller="Category">Kategoriler</a></li>
+                        <li class="@(activeInfoModel.ActiveNavItem == "contactme" ? "active" : "")"><a asp-action="ContactMe" asp-controller="Home">Bana Ulaşın</a></li>
+                        <li class="@(activeInfoModel.ActiveNavItem == "aboutme" ? "active" : "")"><a asp-action="AboutMe" asp-controller="Home">Hakkımda</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!--header end-->
+    <!--breadcrumbs start-->
+    <div class="breadcrumbs" style="padding: 15px 0">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-sm-4">
+                    <h1>@activeInfoModel.ActiveHeader</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--breadcrumbs end-->
+    <!--container start-->
+    <div class="container">
+        <div class="row">
+            <!--blog start-->
+            <div class="col-lg-9">
+                @RenderBody()
+            </div>
+            <div class="col-lg-3">
+                <div class="blog-side-item">
+                    <div class="search-row">
+                        <form id="searchForm" asp-action="SearchInBlogs" asp-controller="Blog">
+                            <input type="text" name="searchString" class="form-control" placeholder="Bloglarda Ara">
+                        </form>
+                    </div>
+                    @await Component.InvokeAsync("PopulerCategoriesVC")
+                    @await Component.InvokeAsync("LastFiveBlogsVC")
+                    @await Component.InvokeAsync("MostViewedBlogsVC")
+                </div>
+            </div>
+            <!--blog end-->
+        </div>
+
+    </div>
+    <!--container end-->
+    <!--footer start-->
+    @await Component.InvokeAsync("FooterSideVC")
+    <!--footer end-->
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="/templates/Frontend(Flatlab)/js/jquery.js"></script>
+    <script src="/templates/Frontend(Flatlab)/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/templates/Frontend(Flatlab)/js/hover-dropdown.js"></script>
+    <script defer src="/templates/Frontend(Flatlab)/js/jquery.flexslider.js"></script>
+    <script type="text/javascript" src="/templates/Frontend(Flatlab)/assets/bxslider/jquery.bxslider.js"></script>
+
+    <script src="/templates/Frontend(Flatlab)/js/jquery.easing.min.js"></script>
+    <script src="/templates/Frontend(Flatlab)/js/link-hover.js"></script>
+
+    <!--common script for all pages-->
+    <script src="/templates/Frontend(Flatlab)/js/common-scripts.js"></script>
+    @RenderSection("Scritps", false)
+</body>
+</html>

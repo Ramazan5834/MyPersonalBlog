@@ -1,0 +1,223 @@
+﻿
+@{
+    ViewData["Title"] = "Blog Detay";
+}
+
+@model Blog
+
+@{
+    var comments = (List<Comment>)ViewBag.Comments;
+
+    void GetComments(List<Comment> comments)
+    {
+        if (comments.Count > 0)
+        {
+            foreach (var comment in comments)
+            {
+                if (comment.Confirmed == false)
+                {
+                    continue;
+                }
+                <div class="media">
+                    <a class="pull-left" href="javascript:;">
+                        <img class="media-object" src="/templates/Frontend(Flatlab)/img/myavatar.png" alt="">
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            @comment.AuthorName <span>|</span>
+                            <span>@comment.PostedTime.ToShortDateString() </span>
+                        </h4>
+                        <p>
+                            @comment.Description
+                        </p>
+                        <a href="javascript:;">&nbsp;</a>
+                        <button type="button" class="btn btn-sm btn-primary float-right" onclick="showCommentForm(@comment.Id,@Model.Id)">Cevapla</button>
+                        <div id="commentBox@(comment.Id)">
+
+                        </div>
+                        <hr>
+                        @{
+                            GetComments(comment.SubComments);
+                        }
+                    </div>
+                </div>
+            }
+        }
+    }
+
+}
+
+<!-- #region CommentStateModal -->
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Yorum Ekleme</h4>
+            </div>
+            <div class="modal-body">
+                <h4 id="commentStateArea"></h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- #endregion -->
+
+<div class="blog-item">
+    <div class="row">
+        <div class="col-lg-2 col-sm-2">
+            <div class="date-wrap comnt-wrap">
+                <span class="date"><h4>Kategoriler</h4></span>
+                @if (Model.CategoryBlogs.Count != 0)
+                {
+                    @foreach (var categoryBlog in Model.CategoryBlogs)
+                    {
+                        <span class="value"> <a asp-controller="Category" asp-action="CategoryDetail" asp-route-categoryId="@categoryBlog.CategoryId" asp-route-name="@Url.FriendlyUrl(categoryBlog.Category.Name)">@categoryBlog.Category.Name</a></span>
+                    }
+                }
+                else
+                {
+                    <span class="value">Kategori Yok</span>
+                }
+            </div>
+            <div class="comnt-wrap">
+                <span class="comnt-ico">
+                    <i class="icon-comments"></i>
+                </span>
+                <span class="value">@Model.Comments.Count</span>
+            </div>
+            <div class="comnt-wrap">
+                <span class="comnt-ico">
+                    <i class="icon-eye-open"></i>
+                </span>
+                <span class="value">@Model.ViewsNumber</span>
+            </div>
+            <div class="comnt-wrap">
+                <span class="comnt-ico">
+                    <i class="icon-calendar"></i>
+                </span>
+                <span class="value">@Model.PostedTime.ToShortDateString()</span>
+            </div>
+
+        </div>
+        <div class="col-lg-10 col-sm-10" style="background-color: white">
+            <div class="blog-img">
+                <img src="~/images/@Model.ImagePath" alt="@Model.Title">
+            </div>
+            <h1><a href="#">@Model.Title</a></h1>
+            <p>@Model.ShortDescription</p>
+            <p>@Html.Raw(Model.Description)</p>
+
+            <div class="post-comment">
+                <h3 class="skills">Yorum Yap</h3>
+                <hr />
+                <form class="form-horizontal">
+                    <input type="hidden" name="BlogId" value="@Model.Id" id="blogId" />
+                    <div class="form-group">
+                        <div class="col-lg-6">
+                            <input type="text" placeholder="Adınız" name="AuthorName" id="authName" class="col-lg-12 form-control">
+                        </div>
+
+                        <div class="col-lg-6">
+                            <input type="text" placeholder="Email" name="AuthorEmail" id="authEmail" class="col-lg-12 form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            <textarea placeholder="Message" rows="8" name="Description" id="messageDescription" class=" form-control"></textarea>
+                        </div>
+                    </div>
+                    <p>
+                        <button type="button" class="btn btn-danger pull-right addComment">Gönder</button>
+                    </p>
+                </form>
+            </div>
+            <br />
+            <h3>Yorumlar</h3>
+
+            @{
+                GetComments(comments);
+            }
+
+            @section Scritps
+            {
+                <script>
+                    function showCommentForm(id, blogId) {
+                        let html =
+                            `<div class="post-comment"><h3 class="skills">Yorum Yap</h3><hr /><form class="form-horizontal"> <input type="hidden" name="ParentCommentId" id="subParentCommentId" value="${id}"/> <input type="hidden" name="BlogId" id="subBlogId" value="${blogId}"/><div class="form-group"><div class="col-lg-6"> <input type="text" placeholder="Adınız" name="AuthorName" id="authSubName" class="col-lg-12 form-control"></div><div class="col-lg-6"> <input type="text" placeholder="Email" name="AuthorEmail" id="authSubEmail" class="col-lg-12 form-control"></div></div><div class="form-group"><div class="col-lg-12"><textarea placeholder="Message" rows="8" name="Description" id="subCommentDescription" class=" form-control"></textarea></div></div><p><button type="button" class="btn btn-warning pull-right" onclick="hideCommentForm(${id})">Vazgeç</button> <button type="button" class="btn btn-danger pull-right" onclick="addSubComment()">Gönder</button></p></form></div>`;
+                        $("#commentBox" + id).html(html);
+                    }
+
+                    function hideCommentForm(id) {
+                        $("#commentBox" + id).html("");
+                    }
+
+                    function addSubComment() {
+                        var subParentCommentId = $("#subParentCommentId").val();
+                        var subBlogId = $("#subBlogId").val();
+                        var authSubName = $("#authSubName").val();
+                        var authSubEmail = $("#authSubEmail").val();
+                        var subCommentDescription = $("#subCommentDescription").val();
+                        if (subParentCommentId == "" || subBlogId == "" || authSubName == "" || authSubEmail == "" || subCommentDescription == "") {
+                            $("#commentStateArea").html("Lütfen Gerekli Alanları Tam Olarak Doldurunuz").css('color', 'red');
+                            $("#myModal").modal();
+                        } else {
+                            $.ajax({
+                                type: "POST",
+                                url: "/Member/Blog/AddToComment",
+                                data: { ParentCommentId: subParentCommentId, BlogId: subBlogId, AuthorName: authSubName, AuthorEmail: authSubEmail, Description: subCommentDescription },
+                                success: function (durum) {
+                                    if (durum == true) {
+                                        $("#commentStateArea").html("Yorumunuz Admin Tarafından Onaylandıktan Sonra Görünür Olacaktır").css('color', 'green');
+                                        $("#myModal").modal();
+                                    } else {
+                                        $("#commentStateArea").html("Yorum Eklenirken Bir Hata Oluştu Lütfen Daha Sonra Tekrar Deneyiniz").css('color', 'red');
+                                        $("#myModal").modal();
+                                    }
+                                    hideCommentForm(subParentCommentId);
+                                }
+                            });
+                        }
+                    };
+
+                    $(".addComment").click(function () {
+                        var blogId = $("#blogId").val();
+                        var authName = $("#authName").val();
+                        var authEmail = $("#authEmail").val();
+                        var commentBody = $("#messageDescription").val();
+                        if (blogId == "" || authName == "" || authEmail == "" || commentBody == "") {
+                            $("#commentStateArea").html("Lütfen Gerekli Alanları Tam Olarak Doldurunuz").css('color', 'red');
+                            $("#myModal").modal();
+                        } else {
+                            $.ajax({
+                                type: "POST",
+                                url: "/Member/Blog/AddToComment",
+                                data: { BlogId: blogId, AuthorName: authName, AuthorEmail: authEmail, Description: commentBody },
+                                success: function (durum) {
+                                    if (durum == true) {
+                                        $("#commentStateArea").html("Yorumunuz Admin Tarafından Onaylandıktan Sonra Görünür Olacaktır").css('color', 'green');
+                                        $("#myModal").modal();
+                                    } else {
+                                        $("#commentStateArea").html("Yorum Eklenirken Bir Hata Oluştu Lütfen Daha Sonra Tekrar Deneyiniz").css('color', 'red');
+                                        $("#myModal").modal();
+                                    }
+                                    $("#authName").val("");
+                                    $("#authEmail").val("");
+                                    $("#messageDescription").val("");
+                                }
+                            });
+                        }
+                        
+                    });
+                </script>
+            }
+        </div>
+    </div>
+</div>
